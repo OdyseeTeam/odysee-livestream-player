@@ -13,14 +13,15 @@ import {VStore} from '@/store';
 import {logger} from "~/plugins/store-utils";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCgIwubBz-nTd0mof6l7eklzJk1evuwzhg",
-  authDomain: "bitwave-7f415.firebaseapp.com",
-  databaseURL: "https://bitwave-7f415.firebaseio.com",
-  projectId: "bitwave-7f415",
-  storageBucket: "bitwave-7f415.appspot.com",
-  messagingSenderId: "246532190856",
-  appId: "1:246532190856:web:314a8853ea0f20717ee53d",
-  measurementId: "G-W05DKSF957",
+  apiKey: "AIzaSyAU3pNgsB3oTMQ9gKIeRv8NNMoBC26ekZM",
+  authDomain: "odysee-livestream-prod.firebaseapp.com",
+  projectId: "odysee-livestream-prod",
+  storageBucket: "odysee-livestream-prod.appspot.com",
+  messagingSenderId: "1017399645596",
+  appId: "1:1017399645596:web:79fa10b1abd66c46e5e459",
+  measurementId: "G-26NXL3H4P2"
+
+  //databaseURL: "https://bitwave-7f415.firebaseio.com", // don't need this for firestore db
 };
 
 if ( !firebase.apps.length ) {

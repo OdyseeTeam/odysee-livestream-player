@@ -31,8 +31,8 @@ import { Player } from '@/store/player';
 const CHECK_INTERVAL = 5;
 const MAX_TIME = 90;
 
-const ODYSEE_VID = 'https://cdn.bitwave.tv/static/odysee-intro.mp4';
-const DEFAULT_POSTER = 'https://cdn.bitwave.tv/static/img/streaming_odysee.jpg';
+const ODYSEE_VID = 'https://cdn.lbryplayer.xyz/content/claims/odysee/7a416c44a6888d94fe045241bbac055c726332aa/stream.mp4';
+const DEFAULT_POSTER = 'https://spee.ch/odysee-streaming-png:2.png?quality=80&height=630&width=1200';
 
 export default {
   name: 'odysee-embed',

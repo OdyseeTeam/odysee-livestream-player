@@ -1,6 +1,6 @@
 module.exports = {
   apps : [{
-    name: 'bitwave.tv',
+    name: 'odysee-livestream-player',
     cwd: './',
     script: 'server/index.js', // Start server
 
@@ -19,17 +19,5 @@ module.exports = {
       NODE_ENV: 'production',
       PORT: 5000,
     },
-  }],
-
-  /*
-    deploy : {
-      production : {
-        user : '',
-        host : '',
-        ref  : 'origin/master',
-        repo : 'git@github.com:repo.git',
-        path : 'srv/bitwave.tv/',
-        'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production'
-      }
-    }//*/
+  }]
 };

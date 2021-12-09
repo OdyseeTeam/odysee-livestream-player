@@ -14,12 +14,10 @@ module.exports = {
     env: {
       NODE_ENV: 'production',
       PORT: 3000,
-      HOST: '0.0.0.0',
     },
     env_production: {
       NODE_ENV: 'production',
       PORT: 5000,
-      HOST: '0.0.0.0',
     },
   }]
 };

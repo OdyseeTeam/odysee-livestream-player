@@ -291,6 +291,7 @@
 
         bitwaveChat.onHydrate = this.onHydration;
         bitwaveChat.rcvMessageBulk = this.rcvMessageBulk;
+        bitwaveChat.updateUsernames = this.updateViewers;
         bitwaveChat.alert = this.addAlert;
 
         bitwaveChat.socketReconnect = () => { this.connecting = false; this.loading = false; };
@@ -811,6 +812,10 @@
         removeIgnoreChannelList  : Chat.$mutations.removeIgnoreChannelList,
         setInputRateLimit        : Chat.$mutations.setInputRateLimit,
         setInputRateLimitMs      : Chat.$mutations.setInputRateLimitMs,
+      }),
+
+      ...mapActions ({
+        updateViewers : VStore.$actions.updateViewers,
       }),
 
       ...mapActions ( Chat.namespace, {

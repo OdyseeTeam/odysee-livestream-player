@@ -141,6 +141,8 @@ const $actions = {
   updateViewerList : 'UPDATE_VIEWERLIST',
   updateEmoteMap   : 'UPDATE_EMOTE_MAP',
   updateChatToken  : 'UPDATE_CHAT_TOKEN',
+
+  createTrollToken : 'CREATE_TROLL_TOKEN',
   exchangeIdTokenChatToken : 'exchangeIdTokenChatToken',
 
   init   : 'INIT_CHAT',
@@ -552,8 +554,48 @@ export const actions = {
     }
   },
 
+
+  async [$actions.createTrollToken] ( { dispatch } ) {
+    const { data } = await this.$axios.get( 'https://api.bitwave.tv/api/troll-token', { progress: false } );
+    await dispatch( $actions.updateChatToken, data.chatToken );
+
+    // TODO: Can this be replaced with saveToLocalStorage
+    try {
+      localStorage.setItem( 'troll', data.chatToken );
+    } catch ( error ) {
+      console.warn( `Failed to save 'troll' (token) to localStorage`, error );
+    }
+  },
+
+
   async [$actions.init] ( { dispatch } ) {
-     return false;
+    // Find existing tokens in localStorage
+    const findChatToken = () => {
+      let token = null;
+      try {
+        // Check for user token
+        token = localStorage.getItem( 'chatToken' );
+        if ( token ) return token;
+        // Check for troll token
+        token = localStorage.getItem( 'troll' );
+        if ( token ) return token;
+      } catch ( error ) {
+        console.log( `no existing tokens found` );
+      }
+      return false;
+    };
+
+    // Check for existing tokens
+    const token = findChatToken();
+    if ( token ) {
+      // Use existing token
+      await dispatch( $actions.updateChatToken, token );
+    } else {
+      // No existing tokens, get new troll token
+      await dispatch( $actions.createTrollToken );
+    }
+
+    return token;
   },
 
   async [$actions.logout] ( { dispatch } ) {
@@ -570,6 +612,22 @@ export const actions = {
       localStorage.removeItem( 'chatToken' );
     } catch ( error ) {
       console.warn( `Failed to remove 'chatToken'`, error );
+    }
+
+    // Check for existing troll token
+    let trollToken = null;
+    try {
+      trollToken = localStorage.getItem( 'troll' );
+    } catch ( error ) {
+      console.warn( `Failed to get 'troll' (token)`, error );
+    }
+
+    if ( !trollToken ) {
+      // Create new troll token if for some reason we don't have one
+      await dispatch( $actions.createTrollToken );
+    } else {
+      // Use existing troll token if available
+      await dispatch( $actions.updateChatToken, trollToken );
     }
 
     loggingOut = false; // Unlock when completed

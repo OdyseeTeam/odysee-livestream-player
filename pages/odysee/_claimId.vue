@@ -32,7 +32,7 @@ const CHECK_INTERVAL = 5;
 const MAX_TIME = 90;
 
 const ODYSEE_VID = 'https://cdn.lbryplayer.xyz/content/claims/odysee/7a416c44a6888d94fe045241bbac055c726332aa/stream.mp4';
-const DEFAULT_POSTER = 'https://spee.ch/odysee-streaming-png:2.png?quality=80&height=630&width=1200';
+const DEFAULT_POSTER = 'https://thumbnails.odysee.com/optimize/s:1200:630/quality:80/plain/https://cdn.lbryplayer.xyz/speech/odysee-streaming-png:2.png';
 
 export default {
   name: 'odysee-embed',

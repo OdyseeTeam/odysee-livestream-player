@@ -9,7 +9,6 @@ const saveToLocalStorage = values => utils.saveToLocalStorage( 'store', values )
 const loadFromLocalStorage = ( commit, props ) => utils.loadFromLocalStorage( 'store', commit, props );
 
 let unsubscribeUser = null;
-let throttledUpdateViewers = null;
 
 // Define Store
 const $states = {
@@ -86,8 +85,6 @@ const $actions = {
 
   updateAlerts : 'CHECK_FOR_ALERTS',
   updateFeatureFlags : 'UPDATE_FEATURE_FLAGS',
-
-  updateViewers : 'UPDATE_VIEWERS',
 
   loadSettings : 'LOAD_SETTINGS',
 };
@@ -326,14 +323,6 @@ export const actions = {
     if ( bwGlobal !== undefined ) {
       commit( `${Chat.namespace}/${Chat.$mutations.setGlobalSSR}`, bwGlobal );
     }
-
-    const runParallel = [
-      // Chat user hydration data
-      dispatch( $actions.updateViewers ),
-    ];
-
-    // Run all our API actions in parallel
-    await Promise.all( runParallel );
   },
 
   // not used due since we couldn't catch errors well here
@@ -487,48 +476,6 @@ export const actions = {
   async [$actions.updateFeatureFlags] ( { commit }, featureFlags ) {
     logger( 'Feature Flags updated!', featureFlags );
     commit( $mutations.setFeatureFlags, featureFlags );
-  },
-
-  async [$actions.updateViewers] ( { commit } ) {
-    if ( !throttledUpdateViewers ) {
-      // How long (in seconds) to wait between subsequent API requests
-      const throttleDelay = 15;
-
-      // Combines update methods
-      const update = async () => {
-        const updateChannelViewers = async () => {
-          try {
-            const { data } = await this.$axios.get( 'https://api.bitwave.tv/v1/chat/channels', { progress: false, skipAuth: true } );
-            if ( data && data.success ) {
-              commit( $mutations.setChannelViewers,  data.data );
-            }
-          } catch ( error ) {
-            console.error( `Failed to hydrate channels`, error.message );
-          }
-        };
-
-        const updateUserList = async () => {
-          try {
-            const { data } = await this.$axios.get( 'https://api.bitwave.tv/v1/chat/users', { progress: false, skipAuth: true } );
-            if ( data && data.success ) {
-              commit( $mutations.setUserList, data.data );
-            }
-          } catch ( error ) {
-            console.error( `Failed to hydrate userlist.`, error.message );
-          }
-        };
-
-        await Promise.all([
-          updateChannelViewers(),
-          updateUserList(),
-        ]);
-      }
-      throttledUpdateViewers = throttle( update, throttleDelay * 1000 );
-      return;
-    }
-    const throttled = throttledUpdateViewers();
-    // logger( `Throttled $actions.updateViewers`, throttled );
-    console.debug( `Throttled $actions.updateViewers`, throttled );
   },
 
   async [$actions.loadSettings] ( { commit } ) {
